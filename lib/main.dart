@@ -7,6 +7,8 @@ import 'dart:developer' as devtools show log;
 import 'package:instagram_clone_with_firebase/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone_with_firebase/state/auth/providers/is_logged_in_provider.dart';
 
+import 'views/components/loading/loading_screen.dart';
+
 extension Log on Object {
   void log() => devtools.log(toString());
 }
@@ -70,26 +72,31 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 50,
-        ),
-        Consumer(
-          builder: ((context, ref, child) {
-            return Center(
-              child: TextButton(
-                  onPressed: () async {
-                    final result = await ref
-                        .read(authStateProvider.notifier)
-                        .loginWithGoogle();
-                    result.log();
-                  },
-                  child: const Text('logInWithGoogle')),
-            );
-          }),
-        )
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('LoginView'),
+      ),
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 50,
+          ),
+          Consumer(
+            builder: ((_, ref, child) {
+              return Center(
+                child: TextButton(
+                    onPressed: () async {
+                       final result = await ref
+                          .read(authStateProvider.notifier)
+                          .loginWithGoogle();
+                      result.log();
+                    },
+                    child: const Text('logInWithGoogle')),
+              );
+            }),
+          )
+        ],
+      ),
     );
   }
 }
