@@ -6,8 +6,9 @@ import 'dart:developer' as devtools show log;
 
 import 'package:instagram_clone_with_firebase/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone_with_firebase/state/auth/providers/is_logged_in_provider.dart';
-
-import 'views/components/loading/loading_screen.dart';
+import 'package:instagram_clone_with_firebase/state/providers/is_loading_providers.dart';
+import 'package:instagram_clone_with_firebase/views/components/loading/loading_screen.dart';
+import 'package:instagram_clone_with_firebase/views/login/login_view.dart';
 
 extension Log on Object {
   void log() => devtools.log(toString());
@@ -33,6 +34,13 @@ void main() async {
         themeMode: ThemeMode.dark,
         debugShowCheckedModeBanner: false,
         home: Consumer(builder: ((context, ref, child) {
+          ref.listen<bool>(isLoadingProvider, (previous, next) {
+            if (next) {
+              LoadingScreen().show(context: context, text: 'Loading...');
+            } else {
+              LoadingScreen().hide();
+            }
+          });
           final isLoggedIn = ref.watch(isLoggedInProvider);
           if (isLoggedIn) {
             return const HomePage();
@@ -65,38 +73,3 @@ class HomePage extends ConsumerWidget {
   }
 }
 
-class LoginView extends StatelessWidget {
-  const LoginView({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('LoginView'),
-      ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          Consumer(
-            builder: ((_, ref, child) {
-              return Center(
-                child: TextButton(
-                    onPressed: () async {
-                       final result = await ref
-                          .read(authStateProvider.notifier)
-                          .loginWithGoogle();
-                      result.log();
-                    },
-                    child: const Text('logInWithGoogle')),
-              );
-            }),
-          )
-        ],
-      ),
-    );
-  }
-}
