@@ -1,5 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter/material.dart';
 import 'package:instagram_clone_with_firebase/views/components/animations/models/lottie_animations.dart';
 import 'package:lottie/lottie.dart';
 

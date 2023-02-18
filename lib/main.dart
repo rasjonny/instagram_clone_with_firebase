@@ -4,17 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:instagram_clone_with_firebase/firebase_options.dart';
 import 'dart:developer' as devtools show log;
 
-import 'package:instagram_clone_with_firebase/state/auth/providers/auth_state_providers.dart';
 import 'package:instagram_clone_with_firebase/state/auth/providers/is_logged_in_provider.dart';
 import 'package:instagram_clone_with_firebase/state/providers/is_loading_providers.dart';
-import 'package:instagram_clone_with_firebase/views/components/animations/data_not_found_animation_view.dart';
-import 'package:instagram_clone_with_firebase/views/components/animations/empty_content_animation_view.dart';
-import 'package:instagram_clone_with_firebase/views/components/animations/empty_content_with_text_animation_view.dart';
-import 'package:instagram_clone_with_firebase/views/components/animations/error_animation_view.dart';
-import 'package:instagram_clone_with_firebase/views/components/animations/loading_animation_view.dart';
-import 'package:instagram_clone_with_firebase/views/components/animations/small_error_animation_view.dart';
+
 import 'package:instagram_clone_with_firebase/views/components/loading/loading_screen.dart';
-import 'package:instagram_clone_with_firebase/views/login/login_view.dart';
+import 'package:instagram_clone_with_firebase/views/main/main_view.dart';
 
 extension Log on Object {
   void log() => devtools.log(toString());
@@ -49,10 +43,9 @@ void main() async {
           });
           final isLoggedIn = ref.watch(isLoggedInProvider);
           if (isLoggedIn) {
-            return const HomePage();
+            return const MainView();
           } else {
-            return const 
-            LoadingAnimationView();
+            return const MainView();
           }
         })),
       ),
@@ -60,23 +53,11 @@ void main() async {
   );
 }
 
-class HomePage extends ConsumerWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('HomePage'),
-      ),
-      body: Center(
-        child: TextButton(
-            onPressed: () {
-              ref.read(authStateProvider.notifier).logOut();
-            },
-            child: const Text('logout')),
-      ),
-    );
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
-
