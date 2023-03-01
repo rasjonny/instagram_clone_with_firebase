@@ -1,6 +1,6 @@
 # instagram_clone_with_firebase
 
-A new Flutter project.
+An instant-gram clone using riverpod flutter state management and backend with firebase.
 
 ## Getting Started
 
