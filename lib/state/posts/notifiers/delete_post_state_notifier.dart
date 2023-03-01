@@ -15,43 +15,41 @@ class DeletePostStateNotifier extends StateNotifier<IsLoading> {
 
   Future<bool> deletePost({required Post post}) async {
     isLoading = true;
-   
-      try {
-         FirebaseStorage.instance
-        .ref()
-        .child(post.userId)
-        .child(FirebaseCollectionNames.thumbnails)
-        .child(post.thumbnailStorageId)
-        .delete();
-    FirebaseStorage.instance
-        .ref()
-        .child(post.userId)
-        .child(post.fileType.getCollectionName())
-        .child(post.originalFileStorageId)
-        .delete();
-    await _deleteAlldocumments(
-        postId: post.postId, inCollection: FirebaseCollectionNames.comments);
-    await _deleteAlldocumments(
-        postId: post.postId, inCollection: FirebaseCollectionNames.likes);
 
-    final query = await FirebaseFirestore.instance
-        .collection(FirebaseCollectionNames.posts)
-        .where(FirebaseFieldNames.postId, isEqualTo: post.postId)
-        .limit(1)
-        .get();
+    try {
+      FirebaseStorage.instance
+          .ref()
+          .child(post.userId)
+          .child(FirebaseCollectionNames.thumbnails)
+          .child(post.thumbnailStorageId)
+          .delete();
+      FirebaseStorage.instance
+          .ref()
+          .child(post.userId)
+          .child(post.fileType.getCollectionName())
+          .child(post.originalFileStorageId)
+          .delete();
+      await _deleteAlldocumments(
+          postId: post.postId, inCollection: FirebaseCollectionNames.comments);
+      await _deleteAlldocumments(
+          postId: post.postId, inCollection: FirebaseCollectionNames.likes);
 
-    for (final doc in query.docs) {
-      doc.reference.delete();
-      
-      }return true; }
-      catch (e) {
-        return false;
+      final query = await FirebaseFirestore.instance
+          .collection(FirebaseCollectionNames.posts)
+          .where(FieldPath.documentId, isEqualTo: post.postId)
+          .limit(1)
+          .get();
+
+      for (final doc in query.docs) {
+        doc.reference.delete();
       }
-      finally{
-        isLoading = false;
-      }
+      return true;
+    } catch (e) {
+      return false;
+    } finally {
+      isLoading = false;
     }
-  
+  }
 
   Future<void> _deleteAlldocumments({
     required PostId postId,
