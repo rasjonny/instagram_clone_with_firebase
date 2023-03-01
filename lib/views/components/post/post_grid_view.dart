@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_with_firebase/state/posts/models/post.dart';
 import 'package:instagram_clone_with_firebase/views/components/post/post_thumbnail_view.dart';
+import 'package:instagram_clone_with_firebase/views/post_details/post_details_view.dart';
 
 class PostGridView extends StatelessWidget {
   const PostGridView({required this.posts, super.key});
@@ -15,9 +16,18 @@ class PostGridView extends StatelessWidget {
         itemBuilder: (context, index) {
           final post = posts.elementAt(index);
           return PostThumbnailView(
-            post: post,
-            onTapped: () {},
-          );
+              post: post,
+              onTapped: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return PostDetailsView(
+                        post: post,
+                      );
+                    },
+                  ),
+                );
+              });
         });
   }
 }
